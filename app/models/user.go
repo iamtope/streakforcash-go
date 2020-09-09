@@ -18,14 +18,14 @@ type Token struct {
 }
 // User structure
 type User  struct {
-	ID int 
-	Email string 
-	Password string
-	Role string
-	Token string 
-	Username string
-	CreatedAt  string
-	UpdatedAt  string
+	ID int `json:"id"`
+	Email string `bson:"email"`
+	Password string `json:"password"`
+	Role string `json:"role"`
+	Token string `json:"token"`
+	Username string `json:"username"`
+	CreatedAt  string`json:"createdAt"`
+	UpdatedAt  string `json:"updatedAt"`
 }
 
 // validation

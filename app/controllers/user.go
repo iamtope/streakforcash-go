@@ -2,23 +2,36 @@ package controllers
 
 import (
 	"net/http"
+	"log"
+
 	"streakforcash-api-go-version/app/models"
 	"encoding/json"
-	u "streakforcash-api-go-version/app/utils"
+	// u "streakforcash-api-go-version/app/utils"
 )
 
 var CreateUser = func(w http.ResponseWriter, r *http.Request) {
-	userResponse := r.Context().Value("user") . (int) //Grab the id of the user that send the request
-	user := &models.User{}
-
-	err := json.NewDecoder(r.Body).Decode(user)
+	// user := &models.User{}
+	data := models.User{}
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&data)
 	if err != nil {
-		u.Response(w, u.Message(false, "Error while decoding request body"))
-		return
-	}
+        panic(err)
+    }
+    log.Println(data)
+    w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
 
-	user.ID = userResponse
-	resp := user.Create()
-	u.Response(w, resp)
+	json.NewEncoder(w).Encode(data)
+
+
+	// err := json.NewDecoder(r.Body).Decode(user)
+	// if err != nil {
+	// 	u.Response(w, u.Message(false, "Error while decoding request body"))
+	// 	return
+	// }
+
+	// user.ID = userResponse
+	// resp := user.Create()
+	// u.Response(w, resp)
 
 }
