@@ -19,21 +19,26 @@ func init() {
 	}
 
 
-	DBHOST := os.Getenv("DBHOST")
+DBHOST := os.Getenv("DBHOST")
 	DBUSER := os.Getenv("DBUSER")
 	DBPASSWORD := os.Getenv("DBPASSWORD")
 	DBNAME := os.Getenv("DBNAME")
-	DBPORT := os.Getenv("DBNAME")
+	DBPORT := os.Getenv("DBPORT")
+	sslmode := os.Getenv("SSLMODE")
 
-	dbURL := fmt.Sprintf("DBHOST=%s DBUSER=%s DBPASSWORD=%s DBNAME=%s DBPORT=%s", DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT)
+	dbURL := fmt.Sprintf("DBHOST=%s DBUSER=%s DBPASSWORD=%s DBNAME=%s DBPORT=%s sslmode=%s", DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, sslmode)
 	fmt.Println(dbURL)
 
 	db, err := sql.Open("postgres", dbURL)
+	
+	fmt.Println(err)
 	if err != nil {
 	panic(err)
+	// defer db.Close()
+	} 
 	defer db.Close()
-	} else {
-		fmt.Println("We are connected to the postgresql database", dbURL)
-	}
+	// else {
+	// 	fmt.Println("We are connected to the postgresql database", dbURL)
+	// }
 
 }

@@ -18,14 +18,14 @@ type Token struct {
 }
 // User structure
 type User  struct {
-	ID int `json: "id"`
-	Email string `json: "email"`
-	Password string `json: "password"`
-	Role string `json: "password`
-	Token string `json: "token"`
-	Username string `json: "username"`
-	CreatedAt  string`json: "createdAt"`
-	UpdatedAt  string `json: "updatedAt"`
+	ID int 
+	Email string 
+	Password string
+	Role string
+	Token string 
+	Username string
+	CreatedAt  string
+	UpdatedAt  string
 }
 
 // validation
@@ -56,7 +56,7 @@ func (user *User) Create() (map[string] interface{}){
 
 	createUser := `
 			INSERT INTO 
-				user(id, role, username, email, created_at, updated_at, password )
+				user_info(id, role, username, email, created_at, updated_at, password )
 			VALUES
 				($1,$2,$3,$4,$5,$6,$7) 
 			RETURNING 

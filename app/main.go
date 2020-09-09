@@ -4,7 +4,6 @@ import (
 	"os"
 	"net/http"
 	"fmt"
-	"github.com/gorilla/mux"
 	"streakforcash-api-go-version/app/router"
 
 )
@@ -16,8 +15,6 @@ func main() {
 		port = "8000"
 	}
 
-
-fmt.Println(port)
 
 err := http.ListenAndServe(":" + port, r)
 

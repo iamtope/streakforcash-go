@@ -7,7 +7,7 @@ import (
 	u "streakforcash-api-go-version/app/utils"
 )
 
-var createUser = func(w http.ResponseWriter, r *http.Request) {
+var CreateUser = func(w http.ResponseWriter, r *http.Request) {
 	userResponse := r.Context().Value("user") . (int) //Grab the id of the user that send the request
 	user := &models.User{}
 
