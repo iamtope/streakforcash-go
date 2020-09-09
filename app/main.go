@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"fmt"
 	"github.com/gorilla/mux"
+	"streakforcash-api-go-version/app/router"
 
 )
 
 func main() {
-	r := mux.NewRouter()
+	r := router.Router()
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8000"
