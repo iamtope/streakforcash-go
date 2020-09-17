@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS user_info(
     wins INT,
     loses INT,
     draws INT,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_at TIMESTAMPTZ  DEFAULT NOW(),
+    updated_at TIMESTAMPTZ  DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS groups(

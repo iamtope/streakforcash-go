@@ -34,7 +34,6 @@ DBHOST := os.Getenv("DBHOST")
 	fmt.Println(err)
 	if err != nil {
 	panic(err)
-	// defer db.Close()
 	} 
 	defer db.Close()
 	// else {

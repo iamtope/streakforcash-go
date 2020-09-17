@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"database/sql"
 	"os"
+	"fmt"
 )
 
 
@@ -24,8 +25,6 @@ type User  struct {
 	Role string `json:"role"`
 	Token string `json:"token"`
 	Username string `json:"username"`
-	CreatedAt  string`json:"createdAt"`
-	UpdatedAt  string `json:"updatedAt"`
 }
 
 // validation
@@ -50,19 +49,20 @@ func (user *User) Create() (map[string] interface{}){
 	if resp, ok := user.Validate(); !ok {
 		return resp
 	}
-
+   fmt.Println("i actually got here, means everythung is fine")
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	user.Password = string(hashedPassword)
 
 	createUser := `
 			INSERT INTO 
-				user_info(id, role, username, email, created_at, updated_at, password )
+				user_info(id, role, username, email, password )
 			VALUES
-				($1,$2,$3,$4,$5,$6,$7) 
+				($1,$2,$3,$4,$5) 
 			RETURNING 
 				id;`
 	
-	row := db.QueryRow(createUser, user.ID, user.Role, user.Email, user.CreatedAt)
+	row := db.QueryRow(createUser, user.Email, user.Password)
+	fmt.Println(row)
 	err := row.Scan(&user.ID)
 	if err != nil {
 		switch err {
