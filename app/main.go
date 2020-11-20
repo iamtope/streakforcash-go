@@ -4,24 +4,20 @@ import (
 	"os"
 	"net/http"
 	"fmt"
-	"github.com/gorilla/mux"
+	"log"
+	"streakforcash-api-go-version/app/router"
 
 )
 
 func main() {
-	r := mux.NewRouter()
+	r := router.Router()
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8000"
 	}
-
-
-fmt.Println(port)
-
+log.Println("Server up and running on port: ", port)
 err := http.ListenAndServe(":" + port, r)
-
 if err != nil {
 	fmt.Print(err)
 }
-
 }
