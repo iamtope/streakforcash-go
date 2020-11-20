@@ -9,10 +9,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var db *sql.DB
-
 // initialise the databse 
-func init() {
+func ReturnInstance() *sql.DB{
 	e := godotenv.Load() // load .env file, ideally this should be done in the func main
 	if e != nil {
 		fmt.Print(e);
@@ -34,8 +32,9 @@ DBHOST := os.Getenv("DBHOST")
 	fmt.Println(err)
 	if err != nil {
 	panic(err)
-	} 
+	}
 	defer db.Close()
+	return db
 	// else {
 	// 	fmt.Println("We are connected to the postgresql database", dbURL)
 	// }

@@ -8,22 +8,22 @@ import (
 	"encoding/json"
 	u "streakforcash-api-go-version/app/utils"
 )
-
 var CreateUser = func(w http.ResponseWriter, r *http.Request) {
 	// user := &models.User{}
 	data := &models.User{}
-	log.Println(models.User{}, "pointer location here")
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(data)
 	if err != nil {
-        panic(err)
+		panic(err)
     }
+	log.Println(models.User{}, "pointer location here")
 	log.Println(data)
-	resp := data.Create()
+	d := models.User{Email: data.Email, Username: data.Username, Password: data.Password}
+	resp := d.Create()
 	u.Response(w, resp)
     w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-
+ 
 	json.NewEncoder(w).Encode(data)
 
 
