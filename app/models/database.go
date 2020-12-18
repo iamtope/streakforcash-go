@@ -11,32 +11,31 @@ import (
 
 // initialise the databse 
 func ReturnInstance() *sql.DB{
-	e := godotenv.Load() // load .env file, ideally this should be done in the func main
+	e := godotenv.Load(".env") // load .env file, ideally this should be done in the func main
 	if e != nil {
 		fmt.Print(e);
 	}
 
-
-DBHOST := os.Getenv("DBHOST")
-	DBUSER := os.Getenv("DBUSER")
-	DBPASSWORD := os.Getenv("DBPASSWORD")
-	DBNAME := os.Getenv("DBNAME")
-	DBPORT := os.Getenv("DBPORT")
+	host := os.Getenv("DBHOST")
+	user := os.Getenv("DBUSER")
+	password := os.Getenv("DBPASSWORD")
+	dbname := os.Getenv("DBNAME")
+	port := os.Getenv("DBPORT")
 	sslmode := os.Getenv("SSLMODE")
 
-	dbURL := fmt.Sprintf("DBHOST=%s DBUSER=%s DBPASSWORD=%s DBNAME=%s DBPORT=%s sslmode=%s", DBHOST, DBUSER, DBPASSWORD, DBNAME, DBPORT, sslmode)
-	fmt.Println(dbURL)
-
+	dbURL := fmt.Sprintf("host=%s port=%s user=%s "+"password=%s dbname=%s  sslmode=%s", host, port, user, password, dbname, sslmode)
 	db, err := sql.Open("postgres", dbURL)
 	
-	fmt.Println(err)
 	if err != nil {
-	panic(err)
+		panic(err)
 	}
-	defer db.Close()
+	err = db.Ping()
+	if err != nil {
+	  panic(err)
+	}
+  
+	fmt.Println("Successfully connected!")
+	fmt.Println("You are Successfully connected!")
 	return db
-	// else {
-	// 	fmt.Println("We are connected to the postgresql database", dbURL)
-	// }
 
 }
