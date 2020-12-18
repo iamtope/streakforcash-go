@@ -8,7 +8,6 @@ import (
 	"database/sql"
 	"os"
 	"log"
-	"fmt"
 	"github.com/google/uuid"
 )
 
@@ -61,7 +60,6 @@ func (user *User) Create() (map[string] interface{}){
 	if resp, ok := user.Validate(); !ok {
 		return resp
 	}
-   fmt.Println("i actually got here, means everythung is fine")
    uniqueID, _ := uuid.NewUUID()
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
@@ -70,19 +68,13 @@ func (user *User) Create() (map[string] interface{}){
 	createUser := `
 	INSERT INTO 
 	user_info(id, role, username, email, password )
-	VALUES
-	(?,?,?,?,?)`
+	VALUES ($1, $2, $3, $4, $5)`
 	// newUser := &CreateUser{Username: user.Username, Email: user.Email, Password: user.Password, Role: "basic", ID: uniqueID}
-	stmt, err := dbx.Prepare(createUser)
+	_, err := dbx.Exec(createUser, uniqueID, "basic", user.Username, user.Email, user.Password)
 	if err != nil {
-		log.Println("Error preparing statement")
+		log.Println("Error preparing statement", err)
 		panic(err)
 	}
-
-log.Println("Incoming user object: ", user)
-	row, err := stmt.Exec(uniqueID, "basic", "iamtope", "iamtope@gmail.com", "$2a$10$ZGQa/tgQzTkD9QJQhXOBletUqTvDx6hFpj/vr6yy/DLC0M6i26v86")
-	log.Println("Row is: ")
-	// err := row.Scan(newUser)
 	if err != nil {
 		switch err {
         case sql.ErrNoRows:
@@ -92,8 +84,7 @@ log.Println("Incoming user object: ", user)
 		}
 	}
 
-	log.Println("Row is: ", row)
-	//Create new JWT token for the newly registered User
+ 	//Create new JWT token for the newly registered User
 	tk := &Token{UserId: user.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("secret")))
