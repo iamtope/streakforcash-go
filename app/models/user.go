@@ -96,3 +96,22 @@ func (user *User) Create() (map[string] interface{}){
 	resp := u.Message(true, "User created successfully")
 	return resp
 }
+
+// login user
+func (user *User) Login() (map[string] interface{}){
+	var dbx = ReturnInstance()
+	findUser := `SELECT * FROM user_info WHERE email=$1`
+	usr, _ := dbx.Exec(findUser, user.Email)
+	log.Println("user is", usr)
+	if usr == nil {
+		return u.Message(false, "You don't seem to be a part of us yet! Why not sign up and let's roll")
+	}
+	err := u.CheckPasswordHash(user.Email, user.Password)
+	if err != nil {
+        return u.Message(false, "Login Failed, Please try again")
+	}
+	token, err := u.EncodeToken(user.ID)
+	user.Token = token
+	resp := u.Message(true, "User token decoded successfully")
+	return resp
+}
