@@ -9,6 +9,7 @@ import(
 func Router() *mux.Router {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/signup", controllers.CreateUser ).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/login", controllers.LoginUser ).Methods("POST", "OPTIONS")
 
 	return router
 }
